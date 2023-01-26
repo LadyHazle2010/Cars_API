@@ -13,10 +13,20 @@ def cars_list(request):
 
    elif request.method == 'POST':
       serializer = Carserializer(data=request.data)
-      serializer.is_valid(raise_exception=True)
+      serializer.is_valid(raise_exception = True)
       serializer.save()
       return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+def car_detail(request, pk):
+   try:
+      car = Car.objects.get(pk = pk)
+      serializer = Carserializer(car);
+      return Response(serializer.data)
+
+      
+   except Car.DoesNotExist:
+      return Response(status=status.HTTP_404_NOT_FOUND);
   
 
 
